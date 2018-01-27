@@ -1,0 +1,33 @@
+{% extends 'frenchpolls/base.html' %}
+
+{% block content %}
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.text}}</p>
+    
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    
+    <form action="{% url 'vote' question.id %}" method="post">
+    {% csrf_token %}
+        {% for choice in question.reponse_set.all %}          
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+            <label for="choice{{ forloop.counter }}">{{choice}}</label><br />
+        {% endfor %}
+        <input type="submit" value="Vote" />
+    </form> 
+
+    <table style="width: 100%"><tr>
+        <td style="text-align: right">
+            <form action="{% url 'detail' question.id %}" name="précèdent" method="post">{% csrf_token %}
+                <input type=hidden name="page" value='-1'>
+                <input type="submit" value="Précèdent">  
+            </form> 
+        </td>
+        <td style="text-align: left">
+            <form action="{% url 'detail' question.id %}" name="suivant" method="post">{% csrf_token %}
+                <input type=hidden name="page" value='1'>
+                <input type="submit" value="Suivant">  
+            </form> 
+        </td>
+    </tr></table>      
+    
+{% endblock %}

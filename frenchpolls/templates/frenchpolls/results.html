@@ -1,0 +1,11 @@
+{% extends 'frenchpolls/base.html' %}
+
+{% block content %}
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.text}}</p>
+    <ul>
+        {% for choice in question.reponse_set.all %}          
+            <li>{{ choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>             
+{% endblock %}
